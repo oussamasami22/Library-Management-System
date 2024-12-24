@@ -1,4 +1,4 @@
-name: 🚀 Build
+name: 🚀 Build and Push Docker Image with SonarCloud Analysis 🔍
 
 on:
   push:
@@ -23,8 +23,18 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: 🛠️ Grant Execute Permission to mvnw
+      run: chmod +x ./mvnw
 
-    - name: 🏗️ Build JAR
+    - name: 🏗️ Build JAR with Tests
       run: ./mvnw clean package -DskipTests
 
+    - name: 🐋 Build Docker Image
+      run: |
+        docker build -t oussamaelg2024/library-management-system:latest .
+    - name: 🚀 Log in to Docker Hub
+      run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username oussamaelg2024 --password-stdin
 
+    - name: 📤 Push Docker Image to Docker Hub
+      run: |
+        docker push oussamasami/library-management-system:latest
