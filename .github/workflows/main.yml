@@ -23,8 +23,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: 🛠️ Grant Execute Permission to mvnw
-      run: chmod +x ./mvnw
 
     - name: 🏗️ Build JAR
       run: ./mvnw clean package -DskipTests
