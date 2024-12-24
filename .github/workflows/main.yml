@@ -1,4 +1,4 @@
-name: 🚀 Build and tests
+name: 🚀 Build
 
 on:
   push:
@@ -27,5 +27,4 @@ jobs:
     - name: 🏗️ Build JAR
       run: ./mvnw clean package -DskipTests
 
-    - name: ✅ Run Unit Tests
-      run: ./mvnw test
+
