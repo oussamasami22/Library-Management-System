@@ -28,6 +28,14 @@ jobs:
 
     - name: 🏗️ Build JAR with Tests
       run: ./mvnw clean package -DskipTests
+    - name: 🔍 SonarCloud Scan
+     
+      run: |
+        mvn sonar:sonar \
+          -Dsonar.projectKey=oussamasami22_Library-Management-System \
+          -Dsonar.organization=oussamasami22 \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=${{ secrets.SONARTOKEN }}
 
     - name: 🐋 Build Docker Image
       run: |
@@ -38,3 +46,4 @@ jobs:
     - name: 📤 Push Docker Image to Docker Hub
       run: |
         docker push oussamaelg2024/library-management-system:latest
+    
