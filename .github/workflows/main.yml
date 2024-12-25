@@ -28,8 +28,8 @@ jobs:
 
     - name: 🏗️ Build JAR with Tests
       run: ./mvnw clean package -DskipTests
+
     - name: 🔍 SonarCloud Scan
-     
       run: |
         mvn sonar:sonar \
           -Dsonar.projectKey=oussamasami22_Library-Management-System \
@@ -40,10 +40,16 @@ jobs:
     - name: 🐋 Build Docker Image
       run: |
         docker build -t oussamaelg2024/library-management-system:latest .
+
     - name: 🚀 Log in to Docker Hub
       run: echo ${{ secrets.DOCKER_HUB_TOKEN }} | docker login --username oussamaelg2024 --password-stdin
+
+    - name: 🛡️ Run Trivy Scan with Retry
+      run: |
+        for i in {1..3}; do
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/trivy-cache:/root/.cache/trivy aquasec/trivy:latest image oussamaelg2024/library-management-system:latest && break || sleep 60
+        done
 
     - name: 📤 Push Docker Image to Docker Hub
       run: |
         docker push oussamaelg2024/library-management-system:latest
-    
